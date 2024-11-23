@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Price Prediction</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to bottom, #cfd7e0, #6CC1FF);
+            color: #fff;
+            height: 980px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            width: 92%;
+            height: 92%;
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(to right, #aab8c7, #0056B3);
+            padding: 20px;
+            text-align: center;
+            color: #fff;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .content {
+            flex: 1;
+            display: flex;
+            flex-direction: row;
+        }
+
+        .side-panel {
+            width: 20%;
+            background: #f9f9f9;
+            padding: 150px 30px 30px 30px;
+            display: block;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            border-right: 2px solid #eeeeee;
+        }
+
+        .side-panel h2 {
+            color: #333;
+            font-size: 30px;
+            font-weight: bold;
+            margin-bottom: 60px;
+        }
+
+        .form-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #007BFF;
+            outline: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #007BFF;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #3077c3;
+        }
+
+        .main-panel {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #f3f5f7;
+            position: relative;
+        }
+
+        .main-panel .graph {
+            width: 90%;
+            height: 90%;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .graph img {
+            max-width: 100%;
+            max-height: 100%;
+            display: none;
+        }
+
+        .spinner {
+            display: none;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #007BFF;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        #results {
+    margin-top: 30px; /* Add spacing between the form and results section */
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    color: #333;
+}
+
+#results h3 {
+    margin-bottom: 10px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+#results p {
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>Stock Price Prediction</header>
+        <div class="content">
+            <div class="side-panel">
+                <h2>Select Stocks</h2>
+                <form id="stock-form" class="form-container">
+                    <div>
+                        <label for="stock">Stock Symbol:</label>
+                        <select id="stock" name="stock" required>
+                            <option value="" disabled selected>Select a Stock</option>
+                            <option value="AAPL">Apple Inc. (AAPL)</option>
+                            <option value="GOOGL">Alphabet Inc. (GOOGL)</option>
+                            <option value="MSFT">Microsoft Corp. (MSFT)</option>
+                            <option value="AMZN">Amazon.com Inc. (AMZN)</option>
+                            <option value="TSLA">Tesla Inc. (TSLA)</option>
+                            <option value="FB">Meta Platforms Inc. (FB)</option>
+                            <option value="NFLX">Netflix Inc. (NFLX)</option>
+                            <option value="NVDA">NVIDIA Corp. (NVDA)</option>
+                            <option value="BABA">Alibaba Group Holding Ltd. (BABA)</option>
+                            <option value="JPM">JPMorgan Chase & Co. (JPM)</option>
+                            <option value="V">Visa Inc. (V)</option>
+                            <option value="WMT">Walmart Inc. (WMT)</option>
+                            <option value="PG">Procter & Gamble Co. (PG)</option>
+                            <option value="DIS">The Walt Disney Company (DIS)</option>
+                            <option value="MA">Mastercard Inc. (MA)</option>
+                            <option value="UNH">UnitedHealth Group Inc. (UNH)</option>
+                            <option value="PYPL">PayPal Holdings Inc. (PYPL)</option>
+                            <option value="INTC">Intel Corp. (INTC)</option>
+                            <option value="CSCO">Cisco Systems Inc. (CSCO)</option>
+                            <option value="PEP">PepsiCo Inc. (PEP)</option>
+                            <option value="KO">Coca-Cola Co. (KO)</option>
+                            <option value="NKE">Nike Inc. (NKE)</option>
+                            <option value="XOM">Exxon Mobil Corp. (XOM)</option>
+                            <option value="BA">Boeing Co. (BA)</option>
+                            <option value="PFE">Pfizer Inc. (PFE)</option>
+                            <option value="MRK">Merck & Co. Inc. (MRK)</option>
+                            <option value="T">AT&T Inc. (T)</option>
+                            <option value="VZ">Verizon Communications Inc. (VZ)</option>
+                            <option value="C">Citigroup Inc. (C)</option>
+                            <option value="GS">Goldman Sachs Group Inc. (GS)</option>
+                            <!-- Add more options -->
+                        </select>
+                    </div>
+                    <div>
+                        <label for="start-date">Previous Year (From):</label>
+                        <input type="date" id="start-date" name="start_date" required>
+                    </div>
+                    <div>
+                        <label for="end-date">Previous Year (To):</label>
+                        <input type="date" id="end-date" name="end_date" required>
+                    </div>
+                    <div>
+                        <label for="days">Future Prediction (in days):</label>
+                        <input type="number" id="days" name="days" min="1" placeholder="Enter number of days" required>
+                    </div>
+                    <button type="submit">Predict</button>
+                </form>
+                <div id="results">
+                    <h3>Prediction Results</h3>
+                    <p id="profit-percent">Total Profit Percent: </p>
+                    <p id="points-capture">Total Points Capture: </p>
+                    <img id="stockGraph" style="display: none;" alt="Stock Graph">
+                </div>
+            </div>
+            
+            <div class="main-panel">
+                <div class="graph">
+                    <div class="spinner"></div>
+                    <img id="stock-graph" src="" alt="Stock Prediction Graph">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('stock-form');
+        const spinner = document.querySelector('.spinner');
+        const stockGraph = document.getElementById('stock-graph');
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const stock = document.getElementById('stock').value;
+            const startDate = document.getElementById('start-date').value;
+            const endDate = document.getElementById('end-date').value;
+            const days = document.getElementById('days').value;
+
+            // Show loading spinner and hide the graph
+            spinner.style.display = 'block';
+            stockGraph.style.display = 'none';
+
+            fetch('/predict', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ stock, start_date: startDate, end_date: endDate, days }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    spinner.style.display = 'none';
+                    stockGraph.src = 'data:image/png;base64,' + data.graph_url;
+                    stockGraph.style.display = 'block';
+                    console.log(data,'----');
+                    // Display the total profit percent and total points capture
+                    document.getElementById('profit-percent').textContent = `Total Percent: ${data.total_profit_percent}%`;
+                    document.getElementById('points-capture').textContent = `Total Points Capture: ${data.total_points_capture}`;
+    
+                })
+                .catch(error => {
+                    spinner.style.display = 'none';
+                    alert('Error fetching data. Please try again.');
+                });
+        });
+    </script>
+</body>
+
+</html>
