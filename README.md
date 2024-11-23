@@ -39,5 +39,6 @@ This project is a Flask-based web application that predicts stock prices in the 
 ### Steps
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/your-username/stock-prediction-app.git
-   cd stock-prediction-app
+   git clone https://github.com/DataScienceDigest/stocks-prediction.git
+   
+   cd stocks-prediction
